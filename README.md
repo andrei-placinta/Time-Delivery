@@ -1,21 +1,145 @@
 # Time-Delivery
-* <i>Developed a C‑based delivery management system with a command‑line interface for adding, editing, tracking, and time‑based scheduling of orders.</i></br>
-* <i>Implemented dynamic memory, file I/O, and custom sorting algorithms to simulate real‑time courier workflows with clean, structured code and persistent data handling.</i>
 
-Time delivery was developed as part of a systems programming assignment focused on building real-world logic using the C programming language and a command-line interface. The goal was to simulate a simplified courier delivery management system, emphasizing fundamental concepts without relying on external libraries or graphical interfaces.
+A C-based command-line delivery management system developed as part of a systems programming project.
 
-The application supports order creation, modification, deletion, sorting by delivery time or ID, and persistent storage through file I/O. It leverages dynamic memory allocation, modular design, and custom sorting algorithms to ensure scalability and clarity. All core operations were implemented manually to strengthen understanding of low-level operations such as pointer manipulation, structured data management, and file handling in C.
+The application simulates a delivery scheduling process based on recipient coordinates, delivery priorities, daily delivery capacity and available fuel.
 
-This project demonstrates the ability to design and implement functional systems with efficient, maintainable C code suitable for environments where performance and control are critical.
+## Features
 
-### Tech Stack
+- Add delivery requests with unique IDs, coordinates and priority levels.
+- Manage pending delivery requests using singly linked lists.
+- Automatically organize delivery requests by coordinates.
+- Calculate Euclidean distances between delivery locations.
+- Prioritize urgent deliveries based on five priority levels.
+- Simulate daily delivery capacity and fuel constraints.
+- Select high-priority deliveries based on available capacity and route distance.
+- Identify intermediate delivery locations along selected route segments.
+- Automatically increase the priority of undelivered requests at the end of each day.
+- Sort delivered request IDs in ascending order.
+- Dynamically allocate and free memory for delivery records.
 
-| Category              | Technologies / Concepts Used                              |
-| --------------------- | --------------------------------------------------------- |
-| **Language**          | C                                                         |
-| **Environment**       | Command Line Interface (CLI)                              |
-| **Memory**            | Dynamic memory allocation (`malloc`, `free`)              |
-| **File Handling**     | Text-based persistence using `fopen`, `fprintf`, `fscanf` |
-| **Data Structures**   | Arrays, structures (`struct`), pointers                   |
-| **Algorithms**        | Custom sorting (by time & ID), input validation           |
-| **Design Principles** | Modular programming, code clarity, low-level control      |
+## Tech Stack
+
+- **Programming Language:** C
+- **Interface:** Command Line Interface (CLI)
+- **Data Structures:** Singly Linked Lists, Structures, Pointers
+- **Memory Management:** Dynamic Memory Allocation (`malloc`, `free`)
+- **Algorithms:** Bubble Sort, Coordinate-Based Sorting, Priority-Based Selection
+- **Mathematical Operations:** Euclidean Distance Calculation (`math.h`)
+- **Input / Output:** Standard C Input and Output (`scanf`, `printf`)
+
+## Implementation Details
+
+### Delivery Management
+
+Each delivery request contains:
+
+- Unique delivery ID.
+- X and Y coordinates.
+- Delivery priority.
+- Pointer to the next request in the linked list.
+
+New requests are inserted into the linked list according to their coordinates.
+
+### Priority Management
+
+The application supports five delivery priority levels:
+
+- `Very_Low`
+- `Low`
+- `Medium`
+- `High`
+- `Very_High`
+
+Undelivered requests automatically increase their priority by one level at the end of each simulated day, until they reach the highest priority.
+
+### Distance Calculation
+
+The application calculates the Euclidean distance between delivery locations using their X and Y coordinates.
+
+\[
+d = \sqrt{(x_2-x_1)^2+(y_2-y_1)^2}
+\]
+
+These calculations are used to estimate route distances and determine whether selected deliveries can be completed within the available fuel budget.
+
+### Daily Delivery Scheduling
+
+The delivery process is simulated day by day.
+
+- A configurable number of deliveries can be completed per day.
+- A fuel allowance is added for each simulated day.
+- The application checks the total route distance against the available fuel.
+- When all pending deliveries cannot be completed, the system prioritizes requests marked as `Very_High`.
+- Additional delivery locations positioned along selected route segments can also be included.
+- Completed requests are removed from the linked list and their allocated memory is released.
+
+### Sorting and Memory Management
+
+- Delivery requests are organized by X and Y coordinates.
+- Selected delivery requests are sorted by coordinates before processing.
+- Delivered request IDs are sorted in ascending order.
+- Dynamic memory allocation is used when creating new delivery records.
+- Memory is released after successful delivery removal.
+
+## Project Structure
+
+```text
+Time-Delivery/
+│
+├── README.md
+└── Source.c
+```
+
+## Running Locally
+
+### Requirements
+
+- Windows
+- GCC compiler (MinGW) or Visual Studio C compiler
+- Command Prompt or terminal
+
+### Compilation
+
+Using GCC:
+
+```bash
+gcc Source.c -o Time-Delivery.exe -lm
+```
+
+### Execution
+
+Run the compiled application:
+
+```bash
+Time-Delivery.exe
+```
+
+### Usage
+
+1. Enter the maximum number of deliveries that can be completed per day.
+
+2. Enter the number of new delivery requests for the current day.
+
+3. For each delivery request, provide:
+   - X coordinate.
+   - Y coordinate.
+   - Priority level (0–4).
+
+4. The application processes delivery requests according to their priority, available capacity and fuel constraints.
+
+5. At the end of each simulated day, the application displays:
+   - Delivered request IDs.
+   - Remaining fuel.
+   - Number of completed deliveries.
+   - Pending requests, when applicable.
+
+6. Requests that remain pending automatically increase their priority before the next simulated day.
+
+**Note:** The application uses in-memory data structures and does not implement file or database persistence. It is designed for execution in a Windows environment.
+
+## Purpose
+
+This academic project demonstrates practical knowledge of C programming, data structures, dynamic memory management, pointers, sorting algorithms, mathematical distance calculations and priority-based scheduling.
+
+It also explores how resource constraints and delivery priorities can be used to simulate a simplified delivery management workflow.
